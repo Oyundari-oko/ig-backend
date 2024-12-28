@@ -3,11 +3,11 @@ const userModel = require("../models/userSchema");
 const signUpUser = require("../controllers/userController");
 const follow = require("../controllers/followController");
 const unfollow = require("../controllers/unfollowController");
-const logIn = require("../controllers/login");
+// const logIn = require("../controllers/login");
 // const userPost = require("../controllers/userPostController");
 const userRoute = Router();
 userRoute.post("/signUp", signUpUser);
-userRoute.post("/login", logIn);
+// userRoute.post("/login", logIn);
 userRoute.get("/user/post", async (req, res) => {
   try {
     const response = await userModel
