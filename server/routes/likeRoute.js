@@ -1,6 +1,7 @@
 const Router = require("express");
 const like = require("../controllers/likeController");
 // const likeModel = require("../models/likeSchema");
+const unlike = require("../controllers/unlike");
 const postModel = require("../models/postSchema");
 const likeModel = require("../models/likeSchema");
 const likeRoute = Router();
@@ -26,4 +27,5 @@ likeRoute.get("/like/likedUser/:postId", async (req, res) => {
     res.status(500).send(error);
   }
 });
+likeRoute.post("/post/unlike", unlike);
 module.exports = likeRoute;

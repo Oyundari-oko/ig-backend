@@ -3,12 +3,12 @@ const postModel = require("../models/postSchema");
 const userModel = require("../models/userSchema");
 const comment = require("../controllers/createCommentController");
 const commentModel = require("../models/commentSchema");
-const post = require("../controllers/postController");
+// const post = require("../controllers/postController");
 const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middlewares/authToken");
 // const like = require("../controllers/likeController");
 const userPost = Router();
-userPost.post("/post", post);
+// userPost.post("/post", post);
 userPost.post("/post/creat", async (req, res) => {
   const { caption, postImg, userId } = req.body;
   const createPost = await postModel.create({

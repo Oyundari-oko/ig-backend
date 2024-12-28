@@ -5,10 +5,9 @@ const like = async (req, res) => {
   const { userId, postId } = req.body;
 
   try {
-    const likePost = await likeModel.create({ userId, postId });
     const likeRes = await postModel.findByIdAndUpdate(postId, {
       $addToSet: {
-        liked: likePost,
+        liked: userI,
       },
     });
     res.send(likeRes);
