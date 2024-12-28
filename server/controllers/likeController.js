@@ -1,5 +1,3 @@
-// const userModel = require("../models/userSchema");
-const likeModel = require("../models/likeSchema");
 const postModel = require("../models/postSchema");
 const like = async (req, res) => {
   const { userId, postId } = req.body;

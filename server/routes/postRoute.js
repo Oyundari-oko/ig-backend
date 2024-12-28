@@ -3,12 +3,12 @@ const postModel = require("../models/postSchema");
 const userModel = require("../models/userSchema");
 const comment = require("../controllers/createCommentController");
 const commentModel = require("../models/commentSchema");
-// const post = require("../controllers/postController");
-const jwt = require("jsonwebtoken");
+const likeModel = require("../models/likeSchema");
 const authMiddleware = require("../middlewares/authToken");
-// const like = require("../controllers/likeController");
+const like = require("../controllers/likeController");
+const unlike = require("../controllers/unlike");
 const userPost = Router();
-// userPost.post("/post", post);
+
 userPost.post("/post/creat", async (req, res) => {
   const { caption, postImg, userId } = req.body;
   const createPost = await postModel.create({
@@ -33,27 +33,14 @@ userPost.get("/comments", async (req, res) => {
 });
 
 userPost.get("/posts", authMiddleware, async (req, res) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader.split(" ")[1];
-  if (!authHeader) res.json({ message: "no token in header" });
-  console.log(token);
-
-  const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-  console.log(decodedToken);
+  console.log("working");
   try {
     const posts = await postModel
       .find()
-      .populate("userId", "email username _id")
-      .populate({
-        path: "liked",
-        populate: {
-          path: "userId",
-          select: "username profileImg",
-        },
-      });
+      .populate("userId", "email username _id");
     res.send(posts);
   } catch (error) {
-    res.send(404).json({ message: `failed to get posts, ${error}` });
+    res.status(404).json({ message: `failed to get posts, ${error}` });
   }
 });
 
@@ -69,17 +56,6 @@ userPost.get("/post/postId", async (req, res) => {
   res.send(response);
 });
 
-// userPost.get("/commentsPost", async (req, res) => {
-//   try {
-//     const comments = await commentModel
-//       .find()
-//       .populate("comments", "postUserId  userId");
-//     res.status(200).json(comments);
-//   } catch (error) {
-//     res.status(500).send(error);
-//   }
-// });
-
 userPost.get("/comments/:postId", async (req, res) => {
   const { postId } = req.params;
 
@@ -93,4 +69,26 @@ userPost.get("/comments/:postId", async (req, res) => {
   }
 });
 
+userPost.post("/post/like", like);
+userPost.get("/like/postId", async (req, res) => {
+  const { postId } = req.query;
+  const getLike = await postModel.find(postId).populate({
+    path: "liked",
+    populate: {
+      path: "userId",
+      select: "username profileImg",
+    },
+  });
+  res.send(getLike);
+});
+userPost.get("/like/likedUser/:postId", async (req, res) => {
+  const { postId } = req.params;
+  try {
+    const like = await likeModel.find({ postId: postId }).populate("userId");
+    res.status(200).json(like);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+userPost.post("/post/unlike", unlike);
 module.exports = userPost;

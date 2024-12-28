@@ -1,9 +1,8 @@
-const likeModel = require("../models/likeSchema");
 const postModel = require("../models/postSchema");
 const unlike = async (req, res) => {
   const { userId, postId } = req.body;
   try {
-    const unlikePost = await likeModel.findOneAndDelete({ userId, postId });
+    const unlikePost = await postModel.findOneAndDelete({ userId, postId });
     console.log("first", unlikePost);
     const unlikeRes = await postModel.findByIdAndUpdate(postId, {
       $pull: {
