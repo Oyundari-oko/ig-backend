@@ -12,7 +12,7 @@ const userSchema = new Schema(
     following: [
       { type: mongoose.Types.ObjectId, ref: "users", required: true },
     ],
-    liked: [{ type: mongoose.Types.ObjectId, ref: "likes", required: true }],
+    liked: [{ type: mongoose.Types.ObjectId, ref: "users", required: true }],
   },
   { timeStamps: true }
 );

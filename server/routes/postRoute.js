@@ -3,7 +3,6 @@ const postModel = require("../models/postSchema");
 const userModel = require("../models/userSchema");
 const comment = require("../controllers/createCommentController");
 const commentModel = require("../models/commentSchema");
-const likeModel = require("../models/likeSchema");
 const authMiddleware = require("../middlewares/authToken");
 const like = require("../controllers/likeController");
 const unlike = require("../controllers/unlike");
@@ -83,9 +82,11 @@ userPost.get("/like/postId", async (req, res) => {
 });
 userPost.get("/like/likedUser/:postId", async (req, res) => {
   const { postId } = req.params;
+
   try {
-    const like = await likeModel.find({ postId: postId }).populate("userId");
-    res.status(200).json(like);
+    const post = await postModel.findById(postId).populate("liked");
+
+    res.status(200).json(post.liked);
   } catch (error) {
     res.status(500).send(error);
   }
