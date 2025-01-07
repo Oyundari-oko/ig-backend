@@ -12,6 +12,6 @@ const comment = async (req, res) => {
       comments: createComment,
     },
   });
-  res.send("create comment to Post");
+  res.send(result);
 };
 module.exports = comment;

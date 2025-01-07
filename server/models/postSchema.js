@@ -9,7 +9,7 @@ const postSchema = new Schema({
   comments: [
     {
       type: mongoose.Types.ObjectId,
-      ref: "comment",
+      ref: "users",
       required: true,
     },
   ],

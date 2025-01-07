@@ -7,11 +7,23 @@ const unfollow = require("../controllers/unfollowController");
 // const userPost = require("../controllers/userPostController");
 const userRoute = Router();
 userRoute.post("/signUp", signUpUser);
-// userRoute.post("/login", logIn);
-userRoute.get("/user/post", async (req, res) => {
+userRoute.get("/signUpUser", async (req, res) => {
   try {
     const response = await userModel
       .find()
+      .populate("username", "email profileImg post followers following");
+    res.send(response);
+  } catch (error) {
+    res.send(error);
+  }
+});
+
+// userRoute.post("/login", logIn);
+userRoute.get("/user/post/:userId", async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const response = await userModel
+      .find({ userId: userId })
       .populate("post", "postImg caption comments");
     console.log(response);
     res.send(response);
@@ -19,6 +31,7 @@ userRoute.get("/user/post", async (req, res) => {
     res.send(error);
   }
 });
+
 userRoute.post("/user/following", follow);
 
 userRoute.post("/user/unfollow", unfollow);
