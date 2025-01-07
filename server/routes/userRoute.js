@@ -23,7 +23,7 @@ userRoute.get("/user/post/:userId", async (req, res) => {
   const { userId } = req.params;
   try {
     const response = await userModel
-      .find({ userId: userId })
+      .findById(userId)
       .populate("post", "postImg caption comments");
     console.log(response);
     res.send(response);
