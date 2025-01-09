@@ -1,14 +1,14 @@
 const userModel = require("../models/userSchema");
 const follow = async (req, res) => {
-  const { followingUserId, followedUserId } = req.body;
-  if (followingUserId === followedUserId) res.send("cannot follow yourself");
+  const { followingUserId, followerUserId } = req.body;
+  if (followingUserId === followerUserId) res.send("cannot follow yourself");
   try {
     await userModel.findByIdAndUpdate(followingUserId, {
       $addToSet: {
-        following: followedUserId,
+        following: followerUserId,
       },
     }),
-      await userModel.findByIdAndUpdate(followedUserId, {
+      await userModel.findByIdAndUpdate(followerUserId, {
         $addToSet: {
           followers: followingUserId,
         },
