@@ -1,9 +1,9 @@
-const { default: mongoose } = require("mongoose");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const userModel = require("../models/userSchema");
 const logIn = async (req, res) => {
   const { email, password } = req.body;
-  console.log(req.body);
-  const response = await mongoose.collection("users").findOne({
+  const response = await userModel.findOne({
     email,
   });
   console.log(response);
@@ -11,13 +11,28 @@ const logIn = async (req, res) => {
   if (!response) {
     res.status(404).send("User not founded");
   }
-  const hashpassword = response.password;
-  const valid_pass = await bcrypt.compare(password, hashpassword);
-  console.log(valid_pass);
-  if (valid_pass) {
-    res.send(response);
-  } else {
-    res.send("password and email is wrong");
+
+  try {
+    const hashpassword = response.password;
+    const valid_pass = await bcrypt.compareSync(password, hashpassword);
+    console.log(valid_pass);
+    const token = jwt.sign(
+      {
+        userId: response._id,
+        username: response.username,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "12h" }
+    );
+    res.send({ token });
+  } catch (error) {
+    console.log(error);
+    res.send(`not Login ${error}`);
   }
+  // if (valid_pass) {
+  //   res.send("false");
+  // } else {
+  //   res.send({ token });
+  // }
 };
 module.exports = logIn;
