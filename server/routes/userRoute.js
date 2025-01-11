@@ -18,7 +18,7 @@ userRoute.get("/signUpUser", async (req, res) => {
   }
 });
 
-userRoute.get("/login", logIn);
+userRoute.post("/login", logIn);
 userRoute.get("/user/post", async (req, res) => {
   try {
     const response = await userModel
