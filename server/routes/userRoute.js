@@ -19,6 +19,17 @@ userRoute.get("/signUpUser", async (req, res) => {
 });
 
 userRoute.post("/login", logIn);
+userRoute.get("/loginUser/:userId", async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const response = await userModel
+      .findById(userId)
+      .populate("email", "username profileImg post followers following");
+    res.send(response);
+  } catch (error) {
+    res.send(error);
+  }
+});
 userRoute.get("/user/post", async (req, res) => {
   try {
     const response = await userModel
@@ -45,6 +56,27 @@ userRoute.get("/user/post/:userId", async (req, res) => {
 });
 
 userRoute.post("/user/following", follow);
+userRoute.get("/user/follow/:userId", async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const followers = await userModel.findById(userId).populate("followers");
+    res.status(200).json(followers.followers);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+userRoute.get("/user/following/:userId", async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const following = await userModel.findById(userId).populate("following");
+    res.status(200).json(following.following);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
 
 userRoute.post("/user/unfollow", unfollow);
 

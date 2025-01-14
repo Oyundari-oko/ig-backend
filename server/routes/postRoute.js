@@ -91,5 +91,6 @@ userPost.get("/like/likedUser/:postId", async (req, res) => {
     res.status(500).send(error);
   }
 });
+
 userPost.post("/post/unlike", unlike);
 module.exports = userPost;
