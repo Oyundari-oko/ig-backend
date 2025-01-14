@@ -56,7 +56,7 @@ userRoute.get("/user/post/:userId", async (req, res) => {
 });
 
 userRoute.post("/user/following", follow);
-userRoute.get("/user/follow/:userId", async (req, res) => {
+userRoute.get("/user/followers/:userId", async (req, res) => {
   const { userId } = req.params;
 
   try {
