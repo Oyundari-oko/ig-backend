@@ -7,11 +7,14 @@ const comment = async (req, res) => {
     userId,
     postUserId,
   });
-  const result = await postModel.findByIdAndUpdate(postUserId, {
+  await postModel.findByIdAndUpdate(postUserId, {
     $push: {
       comments: createComment,
     },
   });
-  res.send(result);
+
+  const result = await postModel.findById(postUserId).populate("comments");
+
+  res.send(result.comments);
 };
 module.exports = comment;

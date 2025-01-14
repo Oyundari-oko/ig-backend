@@ -22,7 +22,6 @@ const signUpUser = async (req, res) => {
 
     res.send({ token });
   } catch (error) {
-    console.log(error);
     res.send(`not Signup ${error}`);
   }
 };

@@ -35,7 +35,6 @@ userRoute.get("/user/post", async (req, res) => {
     const response = await userModel
       .find()
       .populate("post", "postImg caption comments");
-    console.log(response);
     res.send(response);
   } catch (error) {
     res.send(error);
@@ -48,7 +47,6 @@ userRoute.get("/user/post/:userId", async (req, res) => {
     const response = await userModel
       .findById(userId)
       .populate("post", "postImg caption comments");
-    console.log(response);
     res.send(response);
   } catch (error) {
     res.send(error);
